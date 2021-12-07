@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Unity.MLAgents;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SoccerEnvController : MonoBehaviour
 {
@@ -30,7 +31,7 @@ public class SoccerEnvController : MonoBehaviour
     /// <summary>
     /// We will be changing the ground material based on success/failue
     /// </summary>
-
+    public Update_Score update;
     public GameObject ball;
     [HideInInspector]
     public Rigidbody ballRb;
@@ -70,6 +71,7 @@ public class SoccerEnvController : MonoBehaviour
                 m_PurpleAgentGroup.RegisterAgent(item.Agent);
             }
         }
+        
         ResetScene();
     }
 
@@ -102,11 +104,13 @@ public class SoccerEnvController : MonoBehaviour
         {
             m_BlueAgentGroup.AddGroupReward(1 - (float)m_ResetTimer / MaxEnvironmentSteps);
             m_PurpleAgentGroup.AddGroupReward(-1);
+            update.AddOneToPOCAScore();
         }
         else
         {
             m_PurpleAgentGroup.AddGroupReward(1 - (float)m_ResetTimer / MaxEnvironmentSteps);
             m_BlueAgentGroup.AddGroupReward(-1);
+            update.AddOneToPPOScore();
         }
         m_PurpleAgentGroup.EndGroupEpisode();
         m_BlueAgentGroup.EndGroupEpisode();
